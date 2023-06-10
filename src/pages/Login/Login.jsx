@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../providers/AuthProvider';
+import Swal from 'sweetalert2'
 
 
 const Login = () => {
-  const captchaRef = useRef(null)
+  
   const [disable, setDisable] = useState(true)
 
   const { signIn } = useContext(AuthContext);
@@ -16,7 +17,7 @@ const Login = () => {
 
   const handleLogin = event => {
     event.preventDefault();
-    form = event.target;
+    const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
     console.log(email, password)
@@ -24,12 +25,21 @@ const Login = () => {
     .then(result =>{
       const user =  result.user;
       console.log(user)
+      Swal.fire({
+        title: 'login successful',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        }
+      })
     })
     .catch(error => console.log(error))
   }
 
-  const handleValidateCaptcha = () => {
-    const user_captcha_value = captchaRef.current.value;
+  const handleValidateCaptcha = (e) => {
+    const user_captcha_value = e.target.value;
     if (validateCaptcha(user_captcha_value)) {
       setDisable(false)
     }
@@ -62,8 +72,8 @@ const Login = () => {
               <label className="label">
                 <LoadCanvasTemplate></LoadCanvasTemplate>
               </label>
-              <input type="text" name='captcha' ref={captchaRef} placeholder="type the captcha" className="input  input-bordered" />
-              <button onClick={handleValidateCaptcha} className='btn btn-outline btn-xs mt-2'>Validate</button>
+              <input onBlur={handleValidateCaptcha} type="text" name='captcha'  placeholder="type the captcha" className="input  input-bordered" />
+              
 
             </div>
             <div className="form-control mt-6">
