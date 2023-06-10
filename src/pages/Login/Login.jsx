@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../providers/AuthProvider';
 import Swal from 'sweetalert2'
@@ -8,8 +8,11 @@ import Swal from 'sweetalert2'
 const Login = () => {
   
   const [disable, setDisable] = useState(true)
-
   const { signIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     loadCaptchaEnginge(6);
@@ -34,6 +37,7 @@ const Login = () => {
           popup: 'animate__animated animate__fadeOutUp'
         }
       })
+      navigate(from, {replace: true})
     })
     .catch(error => console.log(error))
   }
@@ -57,13 +61,13 @@ const Login = () => {
           <form onSubmit={handleLogin} className="card-body bg-orange-300  rounded">
             <div className="form-control">
               <label className="label ">
-                <span className="label-text font-semibold text-white">Email</span>
+                <span className="label-text font-semibold text-black">Email</span>
               </label>
               <input type="email" name='email' placeholder="email" className="input input-bordered" />
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-semibold text-white">Password</span>
+                <span className="label-text font-semibold text-black">Password</span>
               </label>
               <input type="password" name='password' placeholder="password" className="input  input-bordered" />
 
@@ -72,7 +76,7 @@ const Login = () => {
               <label className="label">
                 <LoadCanvasTemplate></LoadCanvasTemplate>
               </label>
-              <input onBlur={handleValidateCaptcha} type="text" name='captcha'  placeholder="type the captcha" className="input  input-bordered" />
+              <input onBlur={handleValidateCaptcha} type="text" name='captcha'  placeholder="type the captcha" className="input text-white  input-bordered" />
               
 
             </div>
@@ -81,7 +85,7 @@ const Login = () => {
               <input disabled={disable} className="btn btn-primary text-white" type="submit" value="login" />
             </div>
             <div className='text-black'>
-              New to Yoku? please <Link to="/singup">register</Link>
+              New to Yoku? please <Link to="/singup"><span className='text-blue-700'>register</span></Link>
             </div>
           </form>
         </div>

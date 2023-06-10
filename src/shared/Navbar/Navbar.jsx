@@ -18,7 +18,10 @@ const Navbar = () => {
      
       {
         user ? <>
+        <div className='flex'>
         <button onClick={handleLogOut} className='btn btn-ghost hover:bg-green-400'>LogOut</button>
+        <p>{user?.photoURL}</p>
+        </div>
         </> : 
         <>
         <Link to="/login"><li>Login</li></Link>
