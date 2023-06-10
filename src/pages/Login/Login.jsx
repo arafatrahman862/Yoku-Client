@@ -1,13 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
+
 
 const Login = () => {
   const captchaRef = useRef(null)
   const [disable, setDisable] = useState(true)
-  useEffect(()=>{
-    loadCaptchaEnginge(6); 
-  },[])
+
+  const { signIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    loadCaptchaEnginge(6);
+  }, [])
 
   const handleLogin = event => {
     event.preventDefault();
@@ -15,13 +19,19 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     console.log(email, password)
+    signIn(email, password)
+    .then(result =>{
+      const user =  result.user;
+      console.log(user)
+    })
+    .catch(error => console.log(error))
   }
 
-  const handleValidateCaptcha = () =>{
-const user_captcha_value = captchaRef.current.value;
-if(validateCaptcha(user_captcha_value)){
-setDisable(false)
-}
+  const handleValidateCaptcha = () => {
+    const user_captcha_value = captchaRef.current.value;
+    if (validateCaptcha(user_captcha_value)) {
+      setDisable(false)
+    }
 
   }
 
@@ -60,7 +70,7 @@ setDisable(false)
               <input disabled={disable} className="btn btn-primary text-white" type="submit" value="login" />
             </div>
             <div className='text-white'>
-              New to Yoku? please <Link to="/register">register</Link>
+              New to Yoku? please <Link to="/singup">register</Link>
             </div>
           </form>
         </div>

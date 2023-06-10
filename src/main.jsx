@@ -6,7 +6,8 @@ import { router } from './Routes/Routes'
 import {
 
   RouterProvider,
-} from "react-router-dom";
+} from "react-router-dom"
+
 
 
 
@@ -16,8 +17,12 @@ import {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+
+    
     <div className='px-12 bg-slate-50'>
     <RouterProvider router={router} />
     </div>
+  
+    
   </React.StrictMode>,
 )
