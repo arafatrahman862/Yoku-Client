@@ -7,7 +7,7 @@ const Login = () => {
   const captchaRef = useRef(null)
   const [disable, setDisable] = useState(true)
 
-  const { signIn } = useContext(AuthContext);
+  // const { signIn } = useContext(AuthContext);
 
   useEffect(() => {
     loadCaptchaEnginge(6);
@@ -69,7 +69,7 @@ const Login = () => {
 
               <input disabled={disable} className="btn btn-primary text-white" type="submit" value="login" />
             </div>
-            <div className='text-white'>
+            <div className='text-black'>
               New to Yoku? please <Link to="/singup">register</Link>
             </div>
           </form>

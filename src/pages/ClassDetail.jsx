@@ -11,7 +11,8 @@ const ClassDetail = ({classes}) => {
                         <h2 className="card-title"><span  className='text-green-400'>Class Name:</span> {class_name}</h2>
                         <p className='text-lg font-semibold'><span className='text-green-400'>Instructor Name:</span> {instructor_name}</p>
                         <p className='text-lg font-semibold'><span className='text-green-400'>Available Seat:</span> {available_seat}</p>
-                        <p className='text-lg font-semibold'><span className='text-green-400'>Price:</span> {price}</p>
+                        <p className='text-lg font-semibold'><span className='text-green-400'>Price:</span> ${price}</p>
+                        <button  className='btn bg-green-400 text-black hover:bg-green-800'>Select</button>
                         
                     </div>
                 </div>

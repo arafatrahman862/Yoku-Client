@@ -12,7 +12,8 @@ const Class = () => {
     // console.log(data)
     return (
         <div>
-            <p className='font-bold text-6xl my-8 text-center'>classes</p>
+            <p className='font-bold text-6xl my-8  text-center'>Classes</p>
+            
           <div className='grid grid-cols-3 gap-4 my-4'>
             {
                 classes.map(classes => <ClassDetail
