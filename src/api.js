@@ -34,3 +34,7 @@ export async function promoteUser({ email, role }, authToken) {
     return { message }
 }
 
+export function addClass(data) {
+    return sendJson("/class/add", data);
+}
+

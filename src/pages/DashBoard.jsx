@@ -14,6 +14,7 @@ const DashBoard = () => {
     <ul className="menu p-4 w-80 h-full bg-base-200 text-base-content">
       {/* Sidebar content here */}
       <Link to="/manageuser"><li>Manage User</li></Link>
+      <Link to="/addclass"><li>Add Class</li></Link>
       
     </ul>
   </div>
