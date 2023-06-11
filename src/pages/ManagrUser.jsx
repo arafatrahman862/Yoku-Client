@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import * as api from '../api.js';
 
 const ManagrUser = () => {
     const [users, setUsers] = useState([])
@@ -6,7 +7,16 @@ const ManagrUser = () => {
         fetch('http://localhost:5000/user')
             .then(res => res.json())
             .then(data => setUsers(data))
-    }, [])
+    }, []);
+    
+    const promoteUser = async (email, role) => {
+        try {
+            await api.promoteUser({ email, role }, localStorage.getItem("adminAuthToken"))
+        } catch (error) {
+            console.log('Promote error:',error);
+        }
+    }
+
     return (
         <div>
 
@@ -28,9 +38,9 @@ const ManagrUser = () => {
                                 <td>{user.name}</td>
                                 <td>{user._id}</td>
                                 <td>{user.role === 'admin' ? 'admin' :
-                                    <button className="btn btn-ghost bg-orange-600  text-white">Make Admin</button>
+                                    <button onClick={() => promoteUser(user._id, 'admin')} className="btn btn-ghost bg-orange-600  text-white">Make Admin</button>
                                 }</td>
-                                <td><button className="btn btn-ghost bg-orange-600  text-white">Make Instructor</button></td>
+                                <td><button onClick={() => promoteUser(user._id, 'instructor')} className="btn btn-ghost bg-orange-600  text-white">Make Instructor</button></td>
                             </tr>)
                         }
 

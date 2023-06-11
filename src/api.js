@@ -20,7 +20,7 @@ export async function login({ email, password }) {
     return { token }
 }
 
-export async function register({ email, password, ...data}) {
+export async function register({ email, password, ...data }) {
     let { token } = await sendJson("/admin/register", { email, password, ...data });
     return { token }
 }

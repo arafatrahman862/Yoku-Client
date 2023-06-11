@@ -12,12 +12,15 @@ const SingUp = () => {
     const navigate = useNavigate();
     const onSubmit = data => {
         api.register({
+            role: 'admin', // 'admin' or 'instructor'
             email: data.email,
             password: data.password,
             name: data.name,
         })
-        .then(() => { })
-        .catch(() => {})
+            .then(({ token }) => {
+                localStorage.setItem("adminAuthToken", token);
+            })
+            .catch(() => { })
 
         createUser(data.email, data.password)
             .then(result => {
