@@ -8,7 +8,7 @@ const ManagrUser = () => {
             .then(res => res.json())
             .then(data => setUsers(data))
     }, []);
-    
+
     const promoteUser = async (email, role) => {
         try {
             await api.promoteUser({ email, role }, localStorage.getItem("adminAuthToken"))
@@ -37,10 +37,11 @@ const ManagrUser = () => {
                                 <th>{index + 1}</th>
                                 <td>{user.name}</td>
                                 <td>{user._id}</td>
-                                <td>{user.role === 'admin' ? 'admin' :
-                                    <button onClick={() => promoteUser(user._id, 'admin')} className="btn btn-ghost bg-orange-600  text-white">Make Admin</button>
+                                <td>{user.role}</td>
+                                <td>{user.role === 'admin' 
+                                    ? <button onClick={() => promoteUser(user._id, 'instructor')} className="btn btn-ghost bg-orange-600  text-white">Make Instructor</button>
+                                    : <button onClick={() => promoteUser(user._id, 'admin')} className="btn btn-ghost bg-orange-600  text-white">Make Admin</button>
                                 }</td>
-                                <td><button onClick={() => promoteUser(user._id, 'instructor')} className="btn btn-ghost bg-orange-600  text-white">Make Instructor</button></td>
                             </tr>)
                         }
 
