@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../providers/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
+import * as api from '../../api.js';
 import Swal from 'sweetalert2';
 
 
@@ -10,25 +11,33 @@ const SingUp = () => {
     const { createUser, updateUserProfile } = useContext(AuthContext)
     const navigate = useNavigate();
     const onSubmit = data => {
-        console.log(data);
+        api.register({
+            email: data.email,
+            password: data.password,
+            name: data.name,
+        })
+        .then(() => { })
+        .catch(() => {})
+
         createUser(data.email, data.password)
             .then(result => {
+
                 const loggedUser = result.user;
                 console.log(loggedUser)
                 updateUserProfile(data.name, data.photo)
-                .then(()=>{
-                    console.log('user profile info updated')
-                    reset();
-                    Swal.fire({
-                        position: 'top-middle',
-                        icon: 'success',
-                        title: 'User created successfully',
-                        showConfirmButton: false,
-                        timer: 1500
-                      })
-                      navigate('/')
-                })
-                .catch(error => console.log(error))
+                    .then(() => {
+                        console.log('user profile info updated')
+                        reset();
+                        Swal.fire({
+                            position: 'top-middle',
+                            icon: 'success',
+                            title: 'User created successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        navigate('/')
+                    })
+                    .catch(error => console.log(error))
             })
     }
 
@@ -77,7 +86,7 @@ const SingUp = () => {
                             {errors.password?.type === 'maxLength' && <p className='text-red-600'>Password must be less then 20 characters</p>}
                             {errors.password?.type === 'pattern' && <p className='text-red-600'>Password must have one special character and one upper case</p>}
 
-                            
+
                         </div>
                         <div className="form-control mt-6">
                             <input className="btn btn-primary" type="submit" value="Sing Up" />

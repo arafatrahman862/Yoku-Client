@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-const DashBoard = () => {
+const AdminDashBoard = () => {
     return (
         <div className="drawer">
   <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -13,7 +12,8 @@ const DashBoard = () => {
     <label htmlFor="my-drawer" className="drawer-overlay"></label>
     <ul className="menu p-4 w-80 h-full bg-base-200 text-base-content">
       {/* Sidebar content here */}
-      <Link to="/manageuser"><li>Manage User</li></Link>
+      <li><a>Sidebar Item 1</a></li>
+      <li><a>Sidebar Item 2</a></li>
       
     </ul>
   </div>
@@ -21,4 +21,4 @@ const DashBoard = () => {
     );
 };
 
-export default DashBoard;
+export default AdminDashBoard;

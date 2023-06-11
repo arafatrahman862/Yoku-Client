@@ -8,6 +8,8 @@ import SingUp from "../pages/SingUp/SingUp";
 import Instructor from "../pages/Instructor";
 import Class from "../pages/Class";
 import DashBoard from "../pages/DashBoard";
+import AdminDashBoard from "../pages/AdminDashBoard";
+import ManagrUser from "../pages/ManagrUser";
 
 
 export const router = createBrowserRouter([
@@ -38,6 +40,14 @@ export const router = createBrowserRouter([
       {
         path: '/dashboard',
         element: <DashBoard></DashBoard>
+      },
+      {
+        path: '/admindashboard',
+        element: <AdminDashBoard></AdminDashBoard>
+      },
+      {
+        path: '/manageuser',
+        element: <ManagrUser></ManagrUser>
       },
       
     ]
