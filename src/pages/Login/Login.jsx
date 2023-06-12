@@ -4,6 +4,8 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, val
 import { AuthContext } from '../../providers/AuthProvider';
 import * as api from '../../api.js';
 import Swal from 'sweetalert2'
+import { Helmet } from 'react-helmet-async';
+
 
 const Login = () => {
 
@@ -27,15 +29,8 @@ const Login = () => {
 
     api.login({ email, password, role: 'student' })
       .then(({ token }) => {
-        // console.log(token);
-        localStorage.setItem('userAuth', token)
-      });
-
-    signIn(email, password)
-      .then(result => {
-        const user = result.user;
+        // const user = result.user;
         // console.log('signIn', user)
-
         Swal.fire({
           title: 'login successful',
           showClass: {
@@ -46,7 +41,10 @@ const Login = () => {
           }
         })
         navigate(from, { replace: true })
-      })
+        localStorage.setItem('userAuth', token)
+      });
+
+    signIn(email, password)
       .catch(error => console.log(error))
   }
 
@@ -60,6 +58,9 @@ const Login = () => {
 
   return (
     <div className="hero min-h-screen bg-white  ">
+      <Helmet>
+        <title>Yoku | Login</title>
+      </Helmet>
       <div className="hero-content flex-col   rounded">
         <div className="text-center ">
           <h1 className="text-5xl font-bold">Please Login</h1>

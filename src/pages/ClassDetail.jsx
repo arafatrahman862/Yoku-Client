@@ -1,5 +1,6 @@
 import React from 'react';
 import * as api from '../api';
+import Swal from 'sweetalert2';
 
 
 const ClassDetail = ({ classes, user, totalSeat }) => {
@@ -7,11 +8,15 @@ const ClassDetail = ({ classes, user, totalSeat }) => {
     const isDisable = !user || totalSeat == 0;
     function joinClass() {
         
-        // api.getClasses({
-        //     find: { _id },
-        // }).then(console.log)
-        // console.log('userAuth', localStorage.getItem('userAuth'));
+       
         api.joinClass({ class_id: _id }, localStorage.getItem('userAuth'))
+        Swal.fire({
+            position: 'top-center',
+            icon: 'success',
+            title: 'Added Successfull',
+            showConfirmButton: false,
+            timer: 1500
+          })
     }
     return (
         <div>

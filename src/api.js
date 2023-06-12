@@ -59,3 +59,7 @@ export function getClasses({ find, limit, sort, skip }) {
 export function joinClass({ class_id }, userAuthToken) {
     return sendJson("/student/join", { class_id }, { authorization: 'Token: ' + userAuthToken });
 }
+
+export function removeClass({ class_id }, userAuthToken) {
+    return sendJson("/student/remove/class", { class_id }, { authorization: 'Token: ' + userAuthToken });
+}

@@ -8,10 +8,11 @@ import SingUp from "../pages/SingUp/SingUp";
 import Instructor from "../pages/Instructor";
 import Class from "../pages/Class";
 import DashBoard from "../pages/DashBoard";
-import AdminDashBoard from "../pages/AdminDashBoard";
 import ManagrUser from "../pages/ManagrUser";
-import AddClass from "../pages/AddClass";
 import SelectedClass from "../pages/SelectedClass";
+import AddClass from "../pages/AddClass";
+
+
 
 
 export const router = createBrowserRouter([
@@ -39,27 +40,29 @@ export const router = createBrowserRouter([
         path: '/classes',
         element: <Class></Class>
       },
-      {
-        path: '/dashboard',
-        element: <DashBoard></DashBoard>
-      },
-      {
-        path: '/admindashboard',
-        element: <AdminDashBoard></AdminDashBoard>
-      },
-      {
-        path: '/manageuser',
-        element: <ManagrUser></ManagrUser>
-      },
-      {
-        path: '/addclass',
-        element: <AddClass></AddClass>
-      },
-      {
-        path: '/selectedclass',
-        element: <SelectedClass></SelectedClass>
-      },
+      
+      
+      
       
     ]
   },
+  {
+    path: 'dashboard',
+    element: <DashBoard></DashBoard>,
+    children:
+    [
+      {
+        path: 'manageuser',
+        element: <ManagrUser></ManagrUser>
+      },
+      {
+        path: 'addclass',
+        element:<AddClass></AddClass>
+      },
+      {
+        path: 'selectedclass',
+        element: <SelectedClass></SelectedClass>
+      },
+    ]
+  }
 ]);

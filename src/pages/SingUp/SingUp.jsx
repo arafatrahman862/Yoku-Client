@@ -4,6 +4,7 @@ import { AuthContext } from '../../providers/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import * as api from '../../api.js';
 import Swal from 'sweetalert2';
+import { Helmet } from 'react-helmet-async';
 
 
 const SingUp = () => {
@@ -46,6 +47,9 @@ const SingUp = () => {
 
     return (
         <div className="hero min-h-screen bg-white">
+            <Helmet>
+                <title>Yoku | Register</title>
+            </Helmet>
             <div className="hero-content flex-col ">
                 <div className="text-center ">
                     <h1 className="text-5xl font-bold">Sing Up</h1>

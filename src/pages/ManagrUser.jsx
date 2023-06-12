@@ -8,7 +8,7 @@ const ManagrUser = () => {
             .then(res => res.json())
             .then(data => setUsers(data))
     }, []);
-
+// console.log(users)
     const promoteUser = async (email, role) => {
         try {
             await api.promoteUser({ email, role }, localStorage.getItem("adminAuthToken"))
