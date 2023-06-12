@@ -12,6 +12,7 @@ import ManagrUser from "../pages/ManagrUser";
 import SelectedClass from "../pages/SelectedClass";
 import AddClass from "../pages/AddClass";
 import PrivateRoute from "../Routes/PrivateRoute";
+import Error404 from "../pages/Error404";
 
 
 
@@ -41,7 +42,10 @@ export const router = createBrowserRouter([
         path: '/classes',
         element: <Class></Class>
       },
-      
+      {
+        path:'*',
+        element: <Error404></Error404>
+      }
       
       
       
@@ -64,6 +68,10 @@ export const router = createBrowserRouter([
         path: 'selectedclass',
         element: <SelectedClass></SelectedClass>
       },
+      {
+        path:'*',
+        element: <Error404></Error404>
+      }
     ]
   }
 ]);

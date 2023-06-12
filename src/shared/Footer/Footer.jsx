@@ -3,8 +3,8 @@ import React from 'react';
 const Footer = () => {
     return (
         <div>
-            <footer className="footer p-8 bg-base-200 text-white ">
-                <div className='text-white bg-white w-full'>
+            <footer className="footer p-8 bg-orange-200  ">
+                <div className=' bg-white w-full'>
                     <img className=' p-6 w-46' src="https://a6e8z9v6.stackpathcdn.com/yoku/demo1/wp-content/uploads/sites/2/2020/07/logox1.png" alt="" />
                    
                 </div>
@@ -30,7 +30,7 @@ const Footer = () => {
                 </div>
 
             </footer>
-            <footer className="footer footer-center p-4 bg-base-300 text-white">
+            <footer className="footer footer-center p-4 bg-gray-300 ">
                 <div>
                     <p>Copyright © 2023 - All right reserved by ACME Industries Ltd</p>
                 </div>
