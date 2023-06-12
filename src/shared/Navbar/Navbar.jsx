@@ -24,7 +24,8 @@ const Navbar = () => {
             <Link to="/dashboard "><li>Dashboard </li></Link>
             <button onClick={handleLogOut} className='btn btn-ghost hover:bg-green-400'>LogOut</button>
           </div>
-          <p>{user?.photoURL}</p>
+          
+          <img className='rounded-full w-[17%] ' src={user?.photoURL} alt="" />
         </div>
       </> :
         <>

@@ -5,12 +5,13 @@ import { AuthContext } from '../../providers/AuthProvider';
 import * as api from '../../api.js';
 import Swal from 'sweetalert2'
 import { Helmet } from 'react-helmet-async';
+import {   FaGoogle } from 'react-icons/fa';
 
 
 const Login = () => {
 
   const [disable, setDisable] = useState(true)
-  const { signIn } = useContext(AuthContext);
+  const { signIn, googleSignIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -26,6 +27,8 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     console.log('handleLogin:', { email, password });
+
+   
 
     api.login({ email, password, role: 'student' })
       .then(({ token }) => {
@@ -45,9 +48,20 @@ const Login = () => {
       });
 
     signIn(email, password)
+    .then(result => {
+      const user = result.user;
+      console.log(user);})
+    
       .catch(error => console.log(error))
   }
 
+  const handleGoogle = ()=>{
+    googleSignIn()
+    .then(result => {
+      const loggedInUser = result.user;
+      console.log(loggedInUser);})
+     .catch(error => console.log(error))
+  }
   const handleValidateCaptcha = (e) => {
     const user_captcha_value = e.target.value;
     if (validateCaptcha(user_captcha_value)) {
@@ -95,6 +109,9 @@ const Login = () => {
             </div>
             <div className='text-black'>
               New to Yoku? please <Link to="/singup"><span className='text-blue-700'>register</span></Link>
+            </div>
+            <div className='mx-auto'>
+            <button onClick={handleGoogle} className="btn btn-outline btn-circle"><FaGoogle></FaGoogle></button>
             </div>
           </form>
         </div>

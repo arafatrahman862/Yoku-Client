@@ -11,6 +11,7 @@ import DashBoard from "../pages/DashBoard";
 import ManagrUser from "../pages/ManagrUser";
 import SelectedClass from "../pages/SelectedClass";
 import AddClass from "../pages/AddClass";
+import PrivateRoute from "../Routes/PrivateRoute";
 
 
 
@@ -48,7 +49,7 @@ export const router = createBrowserRouter([
   },
   {
     path: 'dashboard',
-    element: <DashBoard></DashBoard>,
+    element: <PrivateRoute><DashBoard></DashBoard></PrivateRoute>,
     children:
     [
       {
