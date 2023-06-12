@@ -27,7 +27,11 @@ const ClassDetail = ({ classes, user, totalSeat }) => {
                     <p className='text-lg font-semibold'><span className='text-green-400'>Instructor Name:</span> {instructor_name}</p>
                     <p className='text-lg font-semibold'><span className='text-green-400'>Available Seat:</span> {available_seat}</p>
                     <p className='text-lg font-semibold'><span className='text-green-400'>Price:</span> ${price}</p>
-                    <button onClick={joinClass} disabled={isDisable} className='btn bg-green-400 text-black hover:bg-green-800'>Select</button>
+                    {
+                        totalSeat === 0 ? <div className="card card-compact w-96  shadow-xl bg-red-700"/>
+                        :
+                        <button onClick={joinClass} disabled={isDisable} className='btn bg-green-400 text-black hover:bg-green-800'>Select</button>
+                    }
 
                 </div>
             </div>

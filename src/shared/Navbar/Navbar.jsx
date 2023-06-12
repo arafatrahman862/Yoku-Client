@@ -19,8 +19,8 @@ const Navbar = () => {
 
     {
       user ? <>
-        <div className='flex'>
-          <div className='flex'>
+        <div className='flex justify-center items-center'>
+          <div className='flex justify-center items-center'>
             <Link to="/dashboard "><li>Dashboard </li></Link>
             <button onClick={handleLogOut} className='btn btn-ghost hover:bg-green-400'>LogOut</button>
           </div>
@@ -49,7 +49,7 @@ const Navbar = () => {
 
           <img src="https://a6e8z9v6.stackpathcdn.com/yoku/demo1/wp-content/uploads/sites/2/2020/07/logox1.png" alt="" />
         </div>
-        <div className="navbar-center hidden lg:flex ">
+        <div className="navbar-center hidden lg:flex justify-center items-center">
           <ul className="menu menu-horizontal space-x-4 font-semibold text-lg px-1">
             {navOptions}
           </ul>

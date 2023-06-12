@@ -2,6 +2,7 @@ import React from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 
+
 const Banner = () => {
     return (
         <div className='w-[100%] min-h-screen'>
@@ -19,6 +20,7 @@ const Banner = () => {
                     
                 </div>
             </Carousel>
+             
         </div>
     );
 };
