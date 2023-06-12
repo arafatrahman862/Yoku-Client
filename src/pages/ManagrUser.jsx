@@ -4,7 +4,7 @@ import * as api from '../api.js';
 const ManagrUser = () => {
     const [users, setUsers] = useState([])
     useEffect(() => {
-        fetch('http://localhost:5000/user')
+        fetch('https://assingment12-server-arafatrahman862.vercel.app/user')
             .then(res => res.json())
             .then(data => setUsers(data))
     }, []);

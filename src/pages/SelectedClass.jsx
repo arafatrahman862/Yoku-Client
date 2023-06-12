@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 const SelectedClass = () => {
     const [joinedClasses, setJoinedClasses] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:5000/student/classes', {
+        fetch('https://assingment12-server-arafatrahman862.vercel.app/student/classes', {
             headers: { authorization: 'Token: ' + localStorage.getItem('userAuth') }
         })
             .then(res => res.json())

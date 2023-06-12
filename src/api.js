@@ -1,5 +1,5 @@
 export const ENDPOINT = {
-    location: "http://localhost:5000",
+    location: "https://assingment12-server-arafatrahman862.vercel.app",
 };
 
 async function sendJson(uri, payload, headers = {}) {
