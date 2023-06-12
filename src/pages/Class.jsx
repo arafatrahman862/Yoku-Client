@@ -1,29 +1,42 @@
 
 import React, { useEffect, useState } from 'react';
 import ClassDetail from './ClassDetail';
+import { useContext } from 'react';
+import { AuthContext } from '../providers/AuthProvider';
+import * as api from '../api.js';
+
 
 const Class = () => {
+    const { user } = useContext(AuthContext)
     const [classes, setClasses] = useState([])
-    useEffect(()=>{
-        fetch('http://localhost:5000/class')
-        .then(res => res.json())
-        .then(data => setClasses(data))
-    },[])
-    // console.log(data)
+    const [totalSeat, setTotalSeat] = useState(0);
+
+    useEffect(() => {
+        console.count('Class');
+        api.getClasses({
+            find: { status: 'approved' },
+            limit: 10,
+        }).then(data => {
+            // console.log(data);
+            setClasses(data)
+        })
+
+        api.availableSeats().then(setTotalSeat)
+    }, [])
     return (
         <div>
             <p className='font-bold text-6xl my-8  text-center'>Classes</p>
-            
-          <div className='grid grid-cols-3 gap-4 my-4'>
-            {
-                classes.map(classes => <ClassDetail
-                key={classes._id}
-                classes={classes}
-                >
 
-                </ClassDetail>)
-            }
-          </div>
+            <div className='grid grid-cols-3 gap-4 my-4'>
+                {
+                    classes.map(classes => <ClassDetail
+                        key={classes._id}
+                        classes={classes}
+                        user={user}
+                        totalSeat={totalSeat}
+                    />)
+                }
+            </div>
         </div>
     );
 };

@@ -24,10 +24,18 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     console.log('handleLogin:', { email, password });
+
+    api.login({ email, password, role: 'student' })
+      .then(({ token }) => {
+        // console.log(token);
+        localStorage.setItem('userAuth', token)
+      });
+
     signIn(email, password)
       .then(result => {
         const user = result.user;
-        console.log(user)
+        // console.log('signIn', user)
+
         Swal.fire({
           title: 'login successful',
           showClass: {
