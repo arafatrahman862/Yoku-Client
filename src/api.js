@@ -15,26 +15,30 @@ async function sendJson(uri, payload, headers = {}) {
     return data;
 }
 
-export async function login({ email, password }) {
-    let { token } = await sendJson("/admin/login", { email, password });
+export async function login({ email, password, role }) {
+    let { token } = await sendJson("/auth/login", { email, password, role });
     return { token }
 }
 
-export async function register({ email, password, ...data }) {
-    let { token } = await sendJson("/admin/register", { email, password, ...data });
+export async function register({ email, password, role, ...data }) {
+    let { token } = await sendJson("/auth/register", { email, password, role, ...data });
     return { token }
 }
 
-export async function promoteUser({ email, role }, authToken) {
+export async function promoteUser({ email, role }, adminAuthToken) {
     let { message } = await sendJson(
-        "/admin/promote",
+        "/auth/promote",
         { email, role },
-        { authorization: 'Token: ' + authToken }
+        { authorization: 'Token: ' + adminAuthToken }
     );
     return { message }
 }
 
-export function addClass(data) {
-    return sendJson("/class/add", data);
+export function addClass(data, authToken) {
+    return sendJson("/class/add", data, { authorization: 'Token: ' + authToken });
 }
 
+export async function availableSeats() {
+    let res = await fetch(ENDPOINT.location + '/class/available/seats');
+    return res.json()
+}

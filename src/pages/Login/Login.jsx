@@ -5,9 +5,8 @@ import { AuthContext } from '../../providers/AuthProvider';
 import * as api from '../../api.js';
 import Swal from 'sweetalert2'
 
-
 const Login = () => {
-  
+
   const [disable, setDisable] = useState(true)
   const { signIn } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -24,23 +23,23 @@ const Login = () => {
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password)
+    console.log('handleLogin:', { email, password });
     signIn(email, password)
-    .then(result =>{
-      const user =  result.user;
-      console.log(user)
-      Swal.fire({
-        title: 'login successful',
-        showClass: {
-          popup: 'animate__animated animate__fadeInDown'
-        },
-        hideClass: {
-          popup: 'animate__animated animate__fadeOutUp'
-        }
+      .then(result => {
+        const user = result.user;
+        console.log(user)
+        Swal.fire({
+          title: 'login successful',
+          showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+          }
+        })
+        navigate(from, { replace: true })
       })
-      navigate(from, {replace: true})
-    })
-    .catch(error => console.log(error))
+      .catch(error => console.log(error))
   }
 
   const handleValidateCaptcha = (e) => {
@@ -77,8 +76,8 @@ const Login = () => {
               <label className="label">
                 <LoadCanvasTemplate></LoadCanvasTemplate>
               </label>
-              <input onBlur={handleValidateCaptcha} type="text" name='captcha'  placeholder="type the captcha" className="input text-white  input-bordered" />
-              
+              <input onBlur={handleValidateCaptcha} type="text" name='captcha' placeholder="type the captcha" className="input text-white  input-bordered" />
+
 
             </div>
             <div className="form-control mt-6">

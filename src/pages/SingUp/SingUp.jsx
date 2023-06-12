@@ -12,7 +12,7 @@ const SingUp = () => {
     const navigate = useNavigate();
     const onSubmit = data => {
         api.register({
-            role: 'admin', // 'admin' or 'instructor'
+            role: 'admin', // 'admin', 'instructor' or 'student'
             email: data.email,
             password: data.password,
             name: data.name,
