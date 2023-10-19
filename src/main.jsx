@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
     
 
-   <div className='px-12 bg-slate-50'>
+   <div className='px-12 '>
     <AuthProvider>
     <HelmetProvider>
     <RouterProvider router={router} />

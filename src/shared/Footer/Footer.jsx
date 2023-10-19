@@ -4,8 +4,8 @@ const Footer = () => {
     return (
         <div>
             <footer className="footer p-8 bg-orange-200  ">
-                <div className=' bg-white w-full'>
-                    <img className=' p-6 w-46' src="https://a6e8z9v6.stackpathcdn.com/yoku/demo1/wp-content/uploads/sites/2/2020/07/logox1.png" alt="" />
+                <div className='  w-full'>
+                    <img className=' p-6 w-36' src="https://img.freepik.com/free-vector/spa-business-logo-lotus-icon-design_53876-115927.jpg?w=740&t=st=1686591695~exp=1686592295~hmac=2081bdcf9602bd32535ceb7cad732b2e3f25561be6ede887f9f2afcd88fd644c" alt="" />
                    
                 </div>
                 <div>
@@ -30,7 +30,7 @@ const Footer = () => {
                 </div>
 
             </footer>
-            <footer className="footer footer-center p-4 bg-gray-300 ">
+            <footer className="footer footer-center p-4  ">
                 <div>
                     <p>Copyright © 2023 - All right reserved by ACME Industries Ltd</p>
                 </div>

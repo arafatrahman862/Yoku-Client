@@ -26,7 +26,7 @@ const AddClass = () => {
     }
 
     return (
-        <div className="hero  bg-white">
+        <div className="hero ">
             <div className="hero-content flex-col ">
 
                 <div className="card  w-full max-w-lg shadow-2xl bg-base-100">

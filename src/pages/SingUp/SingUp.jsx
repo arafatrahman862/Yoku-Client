@@ -46,7 +46,7 @@ const SingUp = () => {
     }
 
     return (
-        <div className="hero min-h-screen bg-white">
+        <div className="hero min-h-screen">
             <Helmet>
                 <title>Yoku | Register</title>
             </Helmet>

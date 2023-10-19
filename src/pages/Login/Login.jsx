@@ -71,7 +71,7 @@ const Login = () => {
   }
 
   return (
-    <div className="hero min-h-screen bg-white  ">
+    <div className="hero min-h-screen   ">
       <Helmet>
         <title>Yoku | Login</title>
       </Helmet>

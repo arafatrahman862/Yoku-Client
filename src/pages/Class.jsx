@@ -31,7 +31,7 @@ const Class = () => {
             </Helmet>
             <p className='font-bold text-6xl my-8  text-center'>Classes</p>
 
-            <div className='grid grid-cols-3 gap-4 my-4'>
+            <div className='md:grid md:grid-cols-3 grid grid-cols-1 gap-4 my-4'>
                 {
                     classes.map(classes => <ClassDetail
                         key={classes._id}

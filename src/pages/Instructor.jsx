@@ -17,9 +17,9 @@ const Instructor = () => {
             <Helmet>
                 <title>Yoku | Instructors</title>
             </Helmet>
-            <p className='font-bold text-6xl my-12 text-center'>Instractors</p>
+            <p className='font-bold text-6xl my-12 text-center'>Instructors</p>
 
-            <div className='grid grid-cols-3 gap-4 my-12'>
+            <div className='grid grid-cols-1 md:grid md:grid-cols-3 gap-4 my-12'>
                 {
                     instructors.map(instructor => <InstructorDetail
                         key={instructor.id}
