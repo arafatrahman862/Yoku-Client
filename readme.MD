@@ -13,7 +13,7 @@
 *  packedge: React
 *
 *
-* site link: https://assignment12-34f50.web.app/
+* site link: https://6531644105546c4bf4462df8--vermillion-paprenjak-5f3c27.netlify.app/
 **
 
 
