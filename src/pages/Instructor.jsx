@@ -4,30 +4,40 @@ import { Helmet } from 'react-helmet-async';
 
 const Instructor = () => {
 
-    const [instructors, setInstructors] = useState([])
+    const [instructors, setInstructors] = useState([]);
 
     useEffect(() => {
-        fetch('instructor.json')
+        fetch('/instructor.json')
             .then(res => res.json())
-            .then(data => setInstructors(data))
-    }, [])
+            .then(data => setInstructors(data));
+    }, []);
 
     return (
-        <div>
+        <div className="px-4 md:px-10 py-10">
             <Helmet>
                 <title>Yoku | Instructors</title>
             </Helmet>
-            <p className='font-bold text-6xl my-12 text-center'>Instractors</p>
 
-            <div className='grid grid-cols-3 gap-4 my-12'>
-                {
-                    instructors.map(instructor => <InstructorDetail
+            <p className="font-bold text-4xl md:text-6xl my-8 text-center">
+                Instructors
+            </p>
+
+            <div
+                className="
+                grid
+                grid-cols-1
+                sm:grid-cols-2
+                lg:grid-cols-3
+                gap-6
+                place-items-center
+                "
+            >
+                {instructors.map((instructor) => (
+                    <InstructorDetail
                         key={instructor.id}
                         instructor={instructor}
-                    >
-
-                    </InstructorDetail>)
-                }
+                    />
+                ))}
             </div>
         </div>
     );

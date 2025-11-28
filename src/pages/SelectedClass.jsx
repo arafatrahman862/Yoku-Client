@@ -1,57 +1,123 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import * as api from '../api.js';
-import Swal from 'sweetalert2';
-
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const SelectedClass = () => {
+    const axiosSecure = useAxiosSecure();
     const [joinedClasses, setJoinedClasses] = useState([]);
+
     useEffect(() => {
-        fetch('https://assingment12-server-arafatrahman862.vercel.app/student/classes', {
-            headers: { authorization: 'Token: ' + localStorage.getItem('userAuth') }
-        })
-            .then(res => res.json())
-            .then(setJoinedClasses)
-    }, []);
-    const handleDelete = deleted_id => {
-       
+        axiosSecure
+            .get("/student/classes")
+            .then((res) => setJoinedClasses(res.data))
+            .catch((err) => console.error("Error loading classes:", err));
+    }, [axiosSecure]);
+
+    const handleDelete = (deleted_id) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
+            title: "Are you sure?",
+            text: "This class will be removed from your selected list.",
+            icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete!",
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                api.removeClass({ class_id: deleted_id }, localStorage.getItem('userAuth'))
-                setJoinedClasses(joinedClasses.filter(({ _id }) => _id != deleted_id))
-              Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-              )
+                try {
+                    await axiosSecure.post("/student/remove", { class_id: deleted_id });
+
+                    setJoinedClasses(
+                        joinedClasses.filter((cls) => cls._id !== deleted_id)
+                    );
+
+                    Swal.fire("Deleted!", "Class removed successfully.", "success");
+                } catch (err) {
+                    Swal.fire("Failed!", "Unable to remove the class.", "error");
+                }
             }
-          })
-    }
+        });
+    };
+
     return (
-        <div className='grid grid-cols-2 gap-6'>
-            {
-                joinedClasses.map(({ _id, img, instructor_name, class_name, available_seat, price, }) => <div className="card card-compact w-96 bg-base-100 shadow-xl">
-                    <figure><img src={img} /></figure>
-                    <div className="card-body">
-                        <h2 className="card-title"><span className='text-green-400'>Class Name:</span> {class_name}</h2>
-                        <p className='text-lg font-semibold'><span className='text-green-400'>Instructor Name:</span> {instructor_name}</p>
-                        <p className='text-lg font-semibold'><span className='text-green-400'>Available Seat:</span> {available_seat}</p>
-                        <p className='text-lg font-semibold'><span className='text-green-400'>Price:</span> ${price}</p>
-                        <button onClick={() => handleDelete(_id)} className='btn bg-red-400 text-black hover:bg-red-800'>Delete</button>
-                        <button className='btn bg-green-400 text-black hover:bg-green-800'>Pay</button>
+        <div className="p-4 sm:p-6 lg:p-8">
 
-                    </div>
-                </div>)
-            }
+            {/* No classes selected */}
+            {joinedClasses.length === 0 && (
+                <p className="text-center text-gray-600 font-semibold text-lg">
+                    No classes selected yet.
+                </p>
+            )}
 
+            {/* Responsive Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+
+                {joinedClasses.map(
+                    ({
+                        _id,
+                        img,
+                        instructor_name,
+                        class_name,
+                        available_seat,
+                        price,
+                    }) => (
+                        <div
+                            key={_id}
+                            className="bg-white rounded-xl shadow-lg border border-orange-200 overflow-hidden hover:shadow-2xl transition-all duration-300"
+                        >
+                            {/* Image */}
+                            <figure className="h-48 md:h-56 w-full overflow-hidden">
+                                <img
+                                    src={img}
+                                    alt={class_name}
+                                    className="w-full h-full object-cover"
+                                />
+                            </figure>
+
+                            {/* Content */}
+                            <div className="p-4 space-y-2">
+
+                                <h2 className="text-xl font-bold leading-tight">
+                                    <span className="text-green-500">Class:</span> {class_name}
+                                </h2>
+
+                                <p className="font-semibold">
+                                    <span className="text-green-500">Instructor:</span>{" "}
+                                    {instructor_name}
+                                </p>
+
+                                <p className="font-semibold">
+                                    <span className="text-green-500">Seats:</span>{" "}
+                                    {available_seat}
+                                </p>
+
+                                <p className="font-semibold">
+                                    <span className="text-green-500">Price:</span> ${price}
+                                </p>
+
+                                {/* Buttons */}
+                                <div className="grid grid-cols-2 gap-3 pt-3">
+
+                                    <button
+                                        onClick={() => handleDelete(_id)}
+                                        className="btn bg-red-500 hover:bg-red-700 text-white w-full rounded-md"
+                                    >
+                                        Delete
+                                    </button>
+
+                                    <button
+                                        className="btn bg-green-500 hover:bg-green-700 text-white w-full rounded-md"
+                                    >
+                                        Pay
+                                    </button>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    )
+                )}
+            </div>
         </div>
     );
 };

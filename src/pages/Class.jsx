@@ -1,45 +1,63 @@
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ClassDetail from './ClassDetail';
 import { useContext } from 'react';
 import { AuthContext } from '../providers/AuthProvider';
-import * as api from '../api.js';
 import { Helmet } from 'react-helmet-async';
-
+import useAxiosPublic from '../hooks/useAxiosPublic';
+import { useQuery } from '@tanstack/react-query';
 
 const Class = () => {
-    const { user } = useContext(AuthContext)
-    const [classes, setClasses] = useState([])
-    const [totalSeat, setTotalSeat] = useState(0);
+    const { user } = useContext(AuthContext);
+    const axiosPublic = useAxiosPublic();
 
-    useEffect(() => {
-        console.count('Class');
-        api.getClasses({
-            find: { status: 'approved' },
-            limit: 10,
-        }).then(data => {
-            // console.log(data);
-            setClasses(data)
-        })
+    // Load approved classes
+    const { data: classes = [] } = useQuery({
+        queryKey: ["approvedClasses"],
+        queryFn: async () => {
+            const res = await axiosPublic.get("/class");
+            return res.data.filter(cls => cls.status === "approved");
+        }
+    });
 
-        api.availableSeats().then(setTotalSeat)
-    }, [])
+    // Load available seats
+    const { data: seatsData = {} } = useQuery({
+        queryKey: ["totalSeats"],
+        queryFn: async () => {
+            const res = await axiosPublic.get("/class/available/seats");
+            return res.data;
+        }
+    });
+
+    const totalSeat = seatsData.totalSeats || 0;
+
     return (
-        <div>
+        <div className="px-4 md:px-10 py-8">
             <Helmet>
                 <title>Yoku | Classes</title>
             </Helmet>
-            <p className='font-bold text-6xl my-8  text-center'>Classes</p>
 
-            <div className='grid grid-cols-3 gap-4 my-4'>
-                {
-                    classes.map(classes => <ClassDetail
-                        key={classes._id}
-                        classes={classes}
+            <p className="font-bold text-4xl md:text-6xl my-6 text-center">
+                Classes
+            </p>
+
+            <div
+                className="
+                grid
+                grid-cols-1
+                sm:grid-cols-2
+                lg:grid-cols-3
+                gap-6
+                place-items-center
+                "
+            >
+                {classes.map(cls => (
+                    <ClassDetail
+                        key={cls._id}
+                        classes={cls}
                         user={user}
                         totalSeat={totalSeat}
-                    />)
-                }
+                    />
+                ))}
             </div>
         </div>
     );

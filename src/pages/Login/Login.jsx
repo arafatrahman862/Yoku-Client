@@ -1,17 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
+import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../providers/AuthProvider';
-import * as api from '../../api.js';
-import Swal from 'sweetalert2'
-import { Helmet } from 'react-helmet-async';
-import {   FaGoogle } from 'react-icons/fa';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
+import Swal from 'sweetalert2';
+import { Helmet } from 'react-helmet-async';
+import { FaGoogle, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = () => {
+  const [disable, setDisable] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const [disable, setDisable] = useState(true)
   const { signIn, googleSignIn } = useContext(AuthContext);
+
+  const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,102 +23,219 @@ const Login = () => {
 
   useEffect(() => {
     loadCaptchaEnginge(6);
-  }, [])
+  }, []);
 
-  const handleLogin = event => {
+  // -----------------------------------------------------
+  // LOGIN FUNCTION
+  // -----------------------------------------------------
+  const handleLogin = async (event) => {
     event.preventDefault();
+    setErrorMsg(""); // clear old error
+
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log('handleLogin:', { email, password });
 
-   
+    try {
+      // 1️⃣ Firebase Login
+      const result = await signIn(email, password);
 
-    api.login({ email, password, role: 'student' })
-      .then(({ token }) => {
-        // const user = result.user;
-        // console.log('signIn', user)
-        Swal.fire({
-          title: 'login successful',
-          showClass: {
-            popup: 'animate__animated animate__fadeInDown'
+      // 2️⃣ Request JWT from backend
+      const jwtRes = await axiosPublic.post("/jwt", { email });
+      localStorage.setItem("access-token", jwtRes.data.token);
+
+      // 3️⃣ Save/Sync user to backend
+      await axiosPublic.post(
+        "/user",
+        {
+          email,
+          name: result.user.displayName || "",
+          photoURL: result.user.photoURL || "",
+        },
+        {
+          headers: {
+            authorization: `Bearer ${jwtRes.data.token}`,
           },
-          hideClass: {
-            popup: 'animate__animated animate__fadeOutUp'
-          }
-        })
-        navigate(from, { replace: true })
-        localStorage.setItem('userAuth', token)
+        }
+      );
+
+      // 4️⃣ Success message
+      Swal.fire({
+        title: 'Login Successful',
+        icon: "success",
+        background: "#fefefe",
       });
 
-    signIn(email, password)
-    .then(result => {
-      const user = result.user;
-      console.log(user);})
-    
-      .catch(error => console.log(error))
-  }
+      // 5️⃣ Redirect
+      navigate(from, { replace: true });
 
-  const handleGoogle = ()=>{
-    googleSignIn()
-    .then(result => {
-      const loggedInUser = result.user;
-      console.log(loggedInUser);})
-     .catch(error => console.log(error))
-  }
-  const handleValidateCaptcha = (e) => {
-    const user_captcha_value = e.target.value;
-    if (validateCaptcha(user_captcha_value)) {
-      setDisable(false)
+    } catch (error) {
+      console.log(error);
+
+      let message = "Login failed. Please check your email and password.";
+
+      if (error.code === "auth/user-not-found") {
+        message = "No account found with this email. Please sign up first.";
+      } else if (error.code === "auth/wrong-password") {
+        message = "Incorrect password. Please try again.";
+      } else if (error.code === "auth/invalid-email") {
+        message = "Invalid email format.";
+      }
+
+      setErrorMsg(message);
+
+      Swal.fire({
+        title: 'Login failed',
+        text: message,
+        icon: "error",
+      });
     }
+  };
 
-  }
+  // -----------------------------------------------------
+  // GOOGLE SIGN-IN
+  // -----------------------------------------------------
+  const handleGoogle = async () => {
+    try {
+      setErrorMsg("");
+      const result = await googleSignIn();
+      const email = result.user.email;
+
+      const jwtRes = await axiosPublic.post("/jwt", { email });
+      localStorage.setItem("access-token", jwtRes.data.token);
+
+      await axiosPublic.post(
+        "/user",
+        {
+          email,
+          name: result.user.displayName,
+          photoURL: result.user.photoURL,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${jwtRes.data.token}`,
+          },
+        }
+      );
+
+      navigate(from, { replace: true });
+
+    } catch (error) {
+      console.log(error);
+      setErrorMsg("Google sign-in failed. Please try again.");
+    }
+  };
+
+  // -----------------------------------------------------
+  // CAPTCHA
+  // -----------------------------------------------------
+  const handleValidateCaptcha = (e) => {
+    if (validateCaptcha(e.target.value)) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  };
 
   return (
-    <div className="hero min-h-screen bg-white  ">
-      <Helmet>
-        <title>Yoku | Login</title>
-      </Helmet>
-      <div className="hero-content flex-col   rounded">
-        <div className="text-center ">
-          <h1 className="text-5xl font-bold">Please Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-orange-200 via-orange-300 to-yellow-200 px-4 py-8">
+      <Helmet><title>Yoku | Login</title></Helmet>
 
-        </div>
-        <div className="card  w-full max-w-lg shadow-2xl bg-base-100 ">
-          <form onSubmit={handleLogin} className="card-body bg-orange-300  rounded">
-            <div className="form-control">
-              <label className="label ">
-                <span className="label-text font-semibold text-black">Email</span>
-              </label>
-              <input type="email" name='email' placeholder="email" className="input input-bordered" />
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold text-black">Password</span>
-              </label>
-              <input type="password" name='password' placeholder="password" className="input  input-bordered" />
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 backdrop-blur-md bg-opacity-90">
+        <h1 className="text-4xl font-extrabold text-center text-orange-600 mb-2">
+          Welcome Back!
+        </h1>
+        <p className="text-center text-gray-600 mb-6">
+          Login to continue to <span className="font-bold text-orange-700">Yoku</span>
+        </p>
 
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <LoadCanvasTemplate></LoadCanvasTemplate>
-              </label>
-              <input onBlur={handleValidateCaptcha} type="text" name='captcha' placeholder="type the captcha" className="input text-white  input-bordered" />
+        {/* Error message */}
+        {errorMsg && (
+          <div className="mb-4 text-red-600 text-sm font-semibold text-center">
+            {errorMsg}
+          </div>
+        )}
 
+        <form onSubmit={handleLogin} className="space-y-5">
 
-            </div>
-            <div className="form-control mt-6">
+          {/* Email */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="Enter your email"
+              className="input input-bordered w-full rounded-lg border-gray-300"
+            />
+          </div>
 
-              <input disabled={disable} className="btn btn-primary text-white" type="submit" value="login" />
+          {/* Password with show/hide */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">Password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                required
+                placeholder="Enter your password"
+                className="input input-bordered w-full rounded-lg border-gray-300 pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-orange-500"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
             </div>
-            <div className='text-black'>
-              New to Yoku? please <Link to="/singup"><span className='text-blue-700'>register</span></Link>
-            </div>
-            <div className='mx-auto'>
-            <button onClick={handleGoogle} className="btn btn-outline btn-circle"><FaGoogle></FaGoogle></button>
-            </div>
-          </form>
-        </div>
+          </div>
+
+          {/* Captcha */}
+          <div>
+            <label className="block mb-1 font-semibold text-gray-700">Captcha Verification</label>
+            <LoadCanvasTemplate />
+            <input
+              onBlur={handleValidateCaptcha}
+              type="text"
+              name="captcha"
+              placeholder="Type the captcha here"
+              className="input input-bordered w-full mt-2 rounded-lg border-orange-400"
+            />
+          </div>
+
+          {/* Login Button */}
+          <button
+            disabled={disable}
+            className="btn w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Login
+          </button>
+
+          {/* Divider */}
+          <div className="flex items-center my-4">
+            <span className="flex-grow h-px bg-gray-300"></span>
+            <span className="px-3 text-gray-600">OR</span>
+            <span className="flex-grow h-px bg-gray-300"></span>
+          </div>
+
+          {/* Google Button */}
+          <button
+            type="button"
+            onClick={handleGoogle}
+            className="btn btn-outline w-full border-orange-500 text-orange-600 hover:bg-orange-100 flex items-center gap-2 rounded-lg"
+          >
+            <FaGoogle /> Login with Google
+          </button>
+
+          <p className="text-center text-gray-700 mt-3">
+            New to Yoku?{" "}
+            <Link to="/signup" className="text-orange-600 font-bold hover:underline">
+              Register
+            </Link>
+          </p>
+
+        </form>
       </div>
     </div>
   );
