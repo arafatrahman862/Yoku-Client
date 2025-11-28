@@ -1,26 +1,28 @@
 /**
-*  Website name: Yoku
-*
-*
-*  Features:
-*  1.This is Yoga website
-*  2.Has popular class list
-*  3.Has Instructor list
-*  4.Has a DashBoard
-*  5.Has online class  system
-*
-*
-*  packedge: React
-
-** ADMIN EMAIL: admin@gmail.com
-** ADMIN PASS: Admin123@
-
-
-** INSTRUCTOR EMAIL: instructor@gmail.com
-** INSTRUCTOR PASS: Instructor123@
-*
-* site link: https://assignment12-34f50.web.app/
-**
-
-
-/
+ * -------------------------------------------------------------
+ *                        YOKU – Yoga Website
+ * -------------------------------------------------------------
+ *
+ * 🔥 Features:
+ * 1. A complete Yoga learning platform
+ * 2. Popular classes section
+ * 3. Instructor directory
+ * 4. User & Admin Dashboard
+ * 5. Online class booking system
+ *
+ * 🛠️ Tech Stack:
+ * - React.js
+ *
+ * 🔐 Admin Login:
+ *    Email: admin@gmail.com
+ *    Password: Admin123@
+ *
+ * 👨‍🏫 Instructor Login:
+ *    Email: instructor@gmail.com
+ *    Password: Instructor123@
+ *
+ * 🌐 Live Site:
+ * https://assignment12-34f50.web.app/
+ *
+ * -------------------------------------------------------------
+ */
