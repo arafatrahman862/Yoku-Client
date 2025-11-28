@@ -11,7 +11,13 @@
 *
 *
 *  packedge: React
-*
+
+** ADMIN EMAIL: admin@gmail.com
+** ADMIN PASS: Admin123@
+
+
+** INSTRUCTOR EMAIL: instructor@gmail.com
+** INSTRUCTOR PASS: Instructor123@
 *
 * site link: https://assignment12-34f50.web.app/
 **
